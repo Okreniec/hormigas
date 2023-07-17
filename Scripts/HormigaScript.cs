@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class HormigaScript : MonoBehaviour
 {
+    public bool movimientoRealizado = false;
+    public bool isPlacedInRoom = false;
+
+    public float velocidad = 10f;
+
     private Animator Animator;
     void Start()
     {
@@ -12,6 +17,23 @@ public class HormigaScript : MonoBehaviour
 
     void Update()
     {
-        //Animator.SetBool("running", ); agregar condición para ejecutar animación de correr
+        
+        //Animator.SetBool("working", ); agregar condiciÃ³n para ejecutar animaciÃ³n de trabajo
+
+        if (!movimientoRealizado && !isPlacedInRoom)
+        {
+            float mitadPantallaX = Camera.main.pixelWidth / 2.45f;
+            float mitadPantallaWorldX = Camera.main.ScreenToWorldPoint(new Vector3(mitadPantallaX, 0f, 0f)).x;
+            Animator.SetBool("running", true);
+
+            transform.Translate(velocidad * Time.deltaTime, 0, 0);
+
+            if (transform.position.x >= mitadPantallaWorldX)
+            {
+                Animator.SetBool("running", false);
+                velocidad = 0f;
+                movimientoRealizado = true;
+            }
+        }
     }
 }
